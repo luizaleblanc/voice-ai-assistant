@@ -38,7 +38,7 @@ export const apiService = {
       {
         role: "system",
         content:
-          "Você é um assistente útil e amigável. Responda de forma clara e concisa em português do Brasil.",
+          "Você é um assistente útil e amigável. Responda de forma clara e concisa em português do Brasil. Use formatação Markdown para facilitar a leitura.",
       },
       ...conversationHistory,
       {
@@ -57,7 +57,7 @@ export const apiService = {
         model: "gpt-4o-mini",
         messages,
         temperature: 0.7,
-        max_tokens: 500,
+        max_tokens: 3000,
       }),
     });
 

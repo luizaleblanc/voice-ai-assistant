@@ -100,8 +100,8 @@ function App() {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row h-[100dvh] lg:h-screen bg-slate-100 font-sans overflow-y-auto lg:overflow-hidden p-2 md:p-4 gap-4">
-      <main className="flex-1 flex flex-col items-center justify-start md:justify-center bg-white rounded-3xl shadow-sm border border-slate-200 relative overflow-y-auto min-h-[500px] lg:min-h-0">
+    <div className="flex flex-col lg:flex-row min-h-screen lg:h-screen bg-slate-100 font-sans p-2 md:p-4 gap-4 overflow-x-hidden">
+      <main className="flex-1 flex flex-col items-center justify-start md:justify-center bg-white rounded-3xl shadow-sm border border-slate-200 relative min-h-[500px] lg:min-h-0 lg:overflow-y-auto lg:h-full">
         <PermissionManager
           permissionGranted={hasPermission}
           onRequestPermission={requestMicrophonePermission}
@@ -178,11 +178,12 @@ function App() {
             {appState === "success" && (
               <div className="space-y-6 md:space-y-8 animate-in fade-in slide-in-from-bottom-4">
                 <div className="bg-slate-50 p-4 md:p-6 rounded-2xl border border-slate-200">
-                  {/* AJUSTE AQUI: text-left para alinhar ao início */}
                   <h3 className="text-xs font-bold text-slate-400 uppercase mb-3 text-left">
                     Sua Mensagem
                   </h3>
-                  <p className="text-slate-700 text-base md:text-lg leading-relaxed">{draftText}</p>
+                  <p className="text-slate-700 text-base md:text-lg leading-relaxed break-words">
+                    {draftText}
+                  </p>
                 </div>
 
                 <ChatResponse response={aiResponse} />
@@ -205,7 +206,7 @@ function App() {
         )}
       </main>
 
-      <aside className="w-full lg:w-[420px] bg-white rounded-3xl shadow-xl border border-slate-200 flex flex-col lg:h-full min-h-[400px] overflow-hidden order-last">
+      <aside className="w-full lg:w-[420px] bg-white rounded-3xl shadow-xl border border-slate-200 flex flex-col lg:h-full min-h-[400px] overflow-hidden order-last lg:order-none">
         <div className="p-4 md:p-6 border-b border-slate-100 bg-slate-50/50">
           <h2 className="font-bold text-slate-800 flex items-center gap-3 text-lg">
             Histórico da Sessão
