@@ -18,6 +18,7 @@ function App() {
 
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
+  const [expandedIds, setExpandedIds] = useState({});
 
   const { hasPermission, requestMicrophonePermission } = usePermissions();
   const { startRecording, stopRecording, isRecording, recordingTime } = useAudioRecorder();
@@ -99,6 +100,13 @@ function App() {
     }
   };
 
+  const toggleExpand = (id) => {
+    setExpandedIds((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
   return (
     <div className="flex flex-col lg:flex-row min-h-screen lg:h-screen bg-slate-100 font-sans p-2 md:p-4 gap-4 overflow-x-hidden">
       <main className="flex-1 flex flex-col items-center justify-start md:justify-center bg-white rounded-3xl shadow-sm border border-slate-200 relative min-h-[500px] lg:min-h-0 lg:overflow-y-auto lg:h-full">
@@ -111,7 +119,7 @@ function App() {
         {hasPermission && (
           <div className="w-full max-w-3xl space-y-6 md:space-y-8 p-4 md:p-8">
             {appState === "idle" && (
-              <div className="text-center space-y-3 mb-8 animate-in fade-in duration-500 pt-8 lg:pt-0">
+              <div className="w-full text-center space-y-3 mb-8 animate-in fade-in duration-500 pt-8 lg:pt-0 mx-auto">
                 <h1 className="text-2xl md:text-3xl font-bold text-slate-800 tracking-tight">
                   Voice AI Assistant
                 </h1>
@@ -176,12 +184,12 @@ function App() {
             )}
 
             {appState === "success" && (
-              <div className="space-y-6 md:space-y-8 animate-in fade-in slide-in-from-bottom-4">
+              <div className="w-full space-y-6 md:space-y-8 animate-in fade-in slide-in-from-bottom-4">
                 <div className="bg-slate-50 p-4 md:p-6 rounded-2xl border border-slate-200">
                   <h3 className="text-xs font-bold text-slate-400 uppercase mb-3 text-left">
                     Sua Mensagem
                   </h3>
-                  <p className="text-slate-700 text-base md:text-lg leading-relaxed break-words">
+                  <p className="text-slate-700 text-base md:text-lg leading-relaxed break-words max-h-48 overflow-y-auto pr-2">
                     {draftText}
                   </p>
                 </div>
@@ -251,9 +259,21 @@ function App() {
 
                   <div className="pt-2 border-t border-slate-50">
                     <p className="text-xs font-bold text-purple-600 uppercase mb-1">IA</p>
-                    <div className="text-xs text-slate-500 bg-purple-50/50 p-3 rounded-xl line-clamp-3 leading-relaxed border border-purple-100/50">
+                    <div
+                      className={`text-xs text-slate-500 bg-purple-50/50 p-3 rounded-xl leading-relaxed border border-purple-100/50 transition-all ${
+                        expandedIds[rec.id] ? "" : "line-clamp-3"
+                      }`}
+                    >
                       {rec.aiResponse}
                     </div>
+                    {rec.aiResponse.length > 100 && (
+                      <button
+                        onClick={() => toggleExpand(rec.id)}
+                        className="text-[10px] font-bold text-purple-600 hover:text-purple-800 mt-2 uppercase tracking-wide focus:outline-none"
+                      >
+                        {expandedIds[rec.id] ? "Ler menos" : "Ler mais"}
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>

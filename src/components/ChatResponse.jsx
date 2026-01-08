@@ -8,7 +8,7 @@ const ChatResponse = ({ response }) => {
         <MessageSquare className="w-5 h-5 text-purple-400 flex-shrink-0" />
         <h3 className="text-lg font-semibold text-purple-100">Resposta da IA</h3>
       </div>
-      <div className="bg-slate-900/60 rounded-xl p-4 md:p-5 text-slate-100 shadow-inner overflow-hidden">
+      <div className="bg-slate-900/60 rounded-xl p-4 md:p-5 text-slate-100 shadow-inner overflow-y-auto max-h-96 pr-2">
         <p className="leading-relaxed whitespace-pre-wrap text-base md:text-lg break-words">
           {response}
         </p>
