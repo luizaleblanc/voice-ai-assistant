@@ -1,9 +1,4 @@
-// Utilitários para manipulação de áudio
-// Será implementado na Phase 3
-
 export const audioUtils = {
-  // TODO: Implementar na Phase 3
-
   blobToBase64: (blob) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();

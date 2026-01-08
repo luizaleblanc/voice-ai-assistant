@@ -1,15 +1,19 @@
 import React from "react";
-import { MessageSquare } from "lucide-react";
+import { FileText } from "lucide-react";
 
 const TranscriptionDisplay = ({ transcription }) => {
   return (
-    <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
-      <div className="flex items-center gap-2 mb-3">
-        <MessageSquare className="w-5 h-5 text-blue-400" />
-        <h3 className="text-lg font-semibold">Transcrição</h3>
+    <div className="bg-white border border-slate-200 rounded-lg overflow-hidden animate-fadeIn shadow-sm">
+      <div className="bg-slate-50 px-4 py-3 border-b border-slate-200 flex items-center gap-2">
+        <FileText className="w-4 h-4 text-slate-500" />
+        <h3 className="text-sm font-semibold text-slate-700 uppercase tracking-wide">
+          Transcrição Original
+        </h3>
       </div>
-      <div className="bg-slate-900 rounded-lg p-4 text-slate-200">
-        <p className="leading-relaxed">{transcription}</p>
+      <div className="p-5">
+        <p className="text-slate-700 leading-relaxed text-base whitespace-pre-wrap">
+          {transcription}
+        </p>
       </div>
     </div>
   );

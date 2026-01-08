@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 export const usePermissions = () => {
   const [hasPermission, setHasPermission] = useState(false);
-  const [permissionState, setPermissionState] = useState("prompt"); // 'prompt' | 'granted' | 'denied'
+  const [permissionState, setPermissionState] = useState("prompt");
   const [error, setError] = useState(null);
 
   useEffect(() => {
