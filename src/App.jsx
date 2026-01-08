@@ -29,7 +29,7 @@ function App() {
 
   useEffect(() => {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      setErrorMessage("Seu navegador nao suporta gravacao de audio. Use Chrome, Firefox ou Edge.");
+      setErrorMessage("Seu navegador não suporta gravação de áudio. Use Chrome, Firefox ou Edge.");
     }
   }, []);
 
@@ -73,7 +73,7 @@ function App() {
       await startRecording();
       setAppState("recording");
     } catch (err) {
-      setErrorMessage(`Erro ao iniciar gravacao: ${err.message}`);
+      setErrorMessage(`Erro ao iniciar gravação: ${err.message}`);
       setAppState("ready");
     }
   };
@@ -89,24 +89,24 @@ function App() {
       setErrorMessage("");
 
       if (!audioBlob || audioBlob.size === 0) {
-        throw new Error("Audio vazio. Grave novamente.");
+        throw new Error("Áudio vazio. Grave novamente.");
       }
 
       if (audioBlob.size > 25000000) {
-        throw new Error("Audio muito grande. Maximo: 25MB");
+        throw new Error("Áudio muito grande. Máximo: 25MB");
       }
 
       const text = await transcribe(audioBlob);
 
       if (!text || text.trim() === "") {
-        throw new Error("Nenhum texto foi detectado no audio. Tente falar mais alto.");
+        throw new Error("Nenhum texto foi detectado no áudio. Tente falar mais alto.");
       }
 
       setTranscription(text);
 
       await handleCompletion(text);
     } catch (err) {
-      console.error("Erro na transcricao:", err);
+      console.error("Erro na transcrição:", err);
       setErrorMessage(err.message);
       setAppState("ready");
     }
@@ -171,7 +171,7 @@ function App() {
                 onClick={handleNewRecording}
                 className="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg font-semibold transition-colors"
               >
-                Nova Gravacao
+                Nova Gravação
               </button>
             </div>
           )}
@@ -182,8 +182,7 @@ function App() {
         </div>
 
         <footer className="mt-12 text-center text-sm text-slate-400">
-          <p>Sua privacidade e importante. O audio e processado de forma segura.</p>
-          <p className="mt-2">Phase 3: Prototipo Funcional - v0.3.0</p>
+          <p>Sua privacidade é importante. O áudio é processado de forma segura.</p>
         </footer>
       </div>
     </div>
