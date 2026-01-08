@@ -100,8 +100,8 @@ function App() {
   };
 
   return (
-    <div className="flex h-screen bg-slate-100 font-sans overflow-hidden p-4 gap-4">
-      <main className="flex-1 flex flex-col items-center justify-center bg-white rounded-3xl shadow-sm border border-slate-200 relative overflow-y-auto">
+    <div className="flex flex-col lg:flex-row h-[100dvh] lg:h-screen bg-slate-100 font-sans overflow-y-auto lg:overflow-hidden p-2 md:p-4 gap-4">
+      <main className="flex-1 flex flex-col items-center justify-start md:justify-center bg-white rounded-3xl shadow-sm border border-slate-200 relative overflow-y-auto min-h-[500px] lg:min-h-0">
         <PermissionManager
           permissionGranted={hasPermission}
           onRequestPermission={requestMicrophonePermission}
@@ -109,23 +109,23 @@ function App() {
         />
 
         {hasPermission && (
-          <div className="w-full max-w-3xl space-y-8 p-8">
+          <div className="w-full max-w-3xl space-y-6 md:space-y-8 p-4 md:p-8">
             {appState === "idle" && (
-              <div className="text-center space-y-3 mb-8 animate-in fade-in duration-500">
-                <h1 className="text-3xl font-bold text-slate-800 tracking-tight">
+              <div className="text-center space-y-3 mb-8 animate-in fade-in duration-500 pt-8 lg:pt-0">
+                <h1 className="text-2xl md:text-3xl font-bold text-slate-800 tracking-tight">
                   Voice AI Assistant
                 </h1>
-                <p className="text-lg text-slate-500">
+                <p className="text-base md:text-lg text-slate-500">
                   Ferramenta de transcrição e{" "}
                   <span className="text-purple-700 font-bold">inteligência artificial</span>.
-                  <br />
-                  Grave sua solicitação para receber uma análise automática.
+                  <br className="hidden md:block" /> Grave sua solicitação para receber uma análise
+                  automática.
                 </p>
               </div>
             )}
 
             {appState === "idle" || appState === "recording" || appState === "transcribing" ? (
-              <div className="flex flex-col items-center gap-8">
+              <div className="flex flex-col items-center gap-6 md:gap-8">
                 <AudioRecorder
                   appState={appState}
                   onStartRecording={handleStart}
@@ -140,25 +140,25 @@ function App() {
             ) : null}
 
             {appState === "review" && (
-              <div className="bg-white p-8 rounded-2xl shadow-lg border border-slate-100 animate-in fade-in slide-in-from-bottom-4">
-                <h3 className="text-sm font-bold text-slate-400 uppercase mb-4 flex items-center gap-2">
+              <div className="bg-white p-4 md:p-8 rounded-2xl shadow-lg border border-slate-100 animate-in fade-in slide-in-from-bottom-4">
+                <h3 className="text-sm font-bold text-slate-400 uppercase mb-4 flex items-center justify-center gap-2">
                   <MessageSquare size={16} /> Revisar Transcrição
                 </h3>
                 <textarea
                   value={draftText}
                   onChange={(e) => setDraftText(e.target.value)}
-                  className="w-full h-40 p-4 text-slate-700 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 focus:outline-none resize-none mb-6 text-lg leading-relaxed"
+                  className="w-full h-32 md:h-40 p-4 text-slate-700 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 focus:outline-none resize-none mb-6 text-base md:text-lg leading-relaxed"
                 />
-                <div className="flex gap-4 justify-end">
+                <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-end">
                   <button
                     onClick={handleNewSession}
-                    className="px-6 py-3 text-slate-600 hover:bg-slate-100 rounded-xl font-medium transition-colors"
+                    className="px-6 py-3 text-slate-600 hover:bg-slate-100 rounded-xl font-medium transition-colors w-full sm:w-auto"
                   >
                     Descartar
                   </button>
                   <button
                     onClick={handleProcessAI}
-                    className="px-8 py-3 bg-slate-900 text-white rounded-xl font-medium hover:bg-slate-800 flex items-center gap-2 transition-all shadow-lg shadow-slate-900/20"
+                    className="px-8 py-3 bg-slate-900 text-white rounded-xl font-medium hover:bg-slate-800 flex items-center justify-center gap-2 transition-all shadow-lg shadow-slate-900/20 w-full sm:w-auto"
                   >
                     Gerar Resposta <ChevronRight size={18} />
                   </button>
@@ -167,27 +167,30 @@ function App() {
             )}
 
             {appState === "processing" && (
-              <div className="flex flex-col items-center gap-4 py-16">
-                <Loader2 className="w-12 h-12 text-purple-600 animate-spin" />
-                <p className="text-slate-600 font-medium text-lg">
+              <div className="flex flex-col items-center gap-4 py-12 md:py-16">
+                <Loader2 className="w-10 h-10 md:w-12 md:h-12 text-purple-600 animate-spin" />
+                <p className="text-slate-600 font-medium text-base md:text-lg text-center">
                   A IA está analisando sua mensagem...
                 </p>
               </div>
             )}
 
             {appState === "success" && (
-              <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4">
-                <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-                  <h3 className="text-xs font-bold text-slate-400 uppercase mb-3">Sua Mensagem</h3>
-                  <p className="text-slate-700 text-lg leading-relaxed">{draftText}</p>
+              <div className="space-y-6 md:space-y-8 animate-in fade-in slide-in-from-bottom-4">
+                <div className="bg-slate-50 p-4 md:p-6 rounded-2xl border border-slate-200">
+                  {/* AJUSTE AQUI: text-left para alinhar ao início */}
+                  <h3 className="text-xs font-bold text-slate-400 uppercase mb-3 text-left">
+                    Sua Mensagem
+                  </h3>
+                  <p className="text-slate-700 text-base md:text-lg leading-relaxed">{draftText}</p>
                 </div>
 
                 <ChatResponse response={aiResponse} />
 
-                <div className="flex justify-center pt-8">
+                <div className="flex justify-center pt-4 md:pt-8 pb-4">
                   <button
                     onClick={handleNewSession}
-                    className="px-8 py-4 bg-slate-900 text-white rounded-xl font-bold hover:bg-slate-800 shadow-xl shadow-slate-900/20 transition-transform active:scale-95"
+                    className="w-full md:w-auto px-8 py-4 bg-slate-900 text-white rounded-xl font-bold hover:bg-slate-800 shadow-xl shadow-slate-900/20 transition-transform active:scale-95"
                   >
                     Iniciar Nova Gravação
                   </button>
@@ -202,23 +205,23 @@ function App() {
         )}
       </main>
 
-      <aside className="w-[420px] bg-white rounded-3xl shadow-xl border border-slate-200 flex flex-col h-full overflow-hidden">
-        <div className="p-6 border-b border-slate-100 bg-slate-50/50">
+      <aside className="w-full lg:w-[420px] bg-white rounded-3xl shadow-xl border border-slate-200 flex flex-col lg:h-full min-h-[400px] overflow-hidden order-last">
+        <div className="p-4 md:p-6 border-b border-slate-100 bg-slate-50/50">
           <h2 className="font-bold text-slate-800 flex items-center gap-3 text-lg">
             Histórico da Sessão
           </h2>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-6 space-y-4">
+        <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4">
           {recordings.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full text-slate-400 space-y-3">
+            <div className="flex flex-col items-center justify-center h-full text-slate-400 space-y-3 py-10 lg:py-0">
               <p className="text-sm">Sessão iniciada. Histórico vazio.</p>
             </div>
           ) : (
             recordings.map((rec) => (
               <div
                 key={rec.id}
-                className="bg-white border border-slate-100 rounded-2xl p-5 hover:border-purple-200 hover:shadow-md transition-all group relative"
+                className="bg-white border border-slate-100 rounded-2xl p-4 md:p-5 hover:border-purple-200 hover:shadow-md transition-all group relative"
               >
                 <div className="flex justify-between items-start mb-3">
                   <span className="text-xs font-mono font-medium text-slate-400 bg-slate-100 px-2 py-1 rounded-md">
@@ -230,7 +233,7 @@ function App() {
 
                   <button
                     onClick={() => initiateDelete(rec.id)}
-                    className="p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors opacity-0 group-hover:opacity-100"
+                    className="p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors opacity-100 lg:opacity-0 lg:group-hover:opacity-100"
                     title="Excluir do histórico"
                   >
                     <Trash2 size={16} />
