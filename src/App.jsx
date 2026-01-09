@@ -29,10 +29,6 @@ function App() {
   const { transcribe, complete } = useOpenAI();
   const { recordings, saveRecording, deleteRecording, clearAllRecordings } = useRecordings();
 
-  useEffect(() => {
-    clearAllRecordings();
-  }, [clearAllRecordings]);
-
   const handleStart = async () => {
     try {
       setErrorMessage("");
