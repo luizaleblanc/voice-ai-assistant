@@ -1,5 +1,5 @@
 import React from "react";
-import { Mic, Square, Loader2, Radio } from "lucide-react";
+import { Mic, Square, Loader2 } from "lucide-react";
 
 const AudioRecorder = ({
   appState,
@@ -17,51 +17,57 @@ const AudioRecorder = ({
   };
 
   return (
-    <div className="flex flex-col items-center justify-center space-y-6 w-full">
-      <div className="h-8 flex items-center justify-center min-w-[120px]">
-        {isRecording ? (
-          <div className="flex items-center gap-2 text-slate-700 animate-pulse bg-slate-100 px-3 py-1 rounded-full border border-slate-200">
-            <Radio className="w-4 h-4" />
-            <span className="font-mono font-medium">{formatTime(recordingTime)}</span>
-          </div>
-        ) : isProcessing ? (
-          <span className="text-slate-500 flex items-center gap-2 font-medium">
-            <Loader2 className="w-4 h-4 animate-spin" />
-            Processando...
-          </span>
-        ) : null}
+    <div className="flex flex-col items-center justify-center w-full relative z-20">
+      <div
+        className={`mb-8 transition-all duration-300 transform ${
+          isRecording ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+        }`}
+      >
+        <div className="flex items-center gap-3 px-6 py-2 bg-red-50 text-red-600 rounded-full font-mono font-bold text-xl border border-red-100 shadow-sm">
+          <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
+          {formatTime(recordingTime)}
+        </div>
       </div>
 
-      <div className="relative">
+      <div className="relative group">
+        {isRecording && (
+          <>
+            <div className="absolute inset-0 bg-red-500 rounded-full opacity-20 animate-ping"></div>
+            <div className="absolute inset-[-12px] bg-red-500 rounded-full opacity-10 animate-pulse"></div>
+          </>
+        )}
+
         {!isRecording ? (
           <button
             onClick={onStartRecording}
             disabled={isProcessing}
-            className="group relative flex flex-col items-center justify-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="relative w-24 h-24 md:w-32 md:h-32 flex items-center justify-center bg-slate-900 rounded-full shadow-2xl hover:bg-blue-600 hover:scale-105 active:scale-95 transition-all duration-300 group-disabled:opacity-50 group-disabled:cursor-not-allowed border-4 border-slate-100"
             title="Iniciar gravação"
           >
-            <div className="w-16 h-16 md:w-20 md:h-20 bg-slate-700 hover:bg-slate-800 rounded-full flex items-center justify-center shadow-lg hover:shadow-slate-300 transition-all transform group-active:scale-95">
-              <Mic className="w-8 h-8 md:w-8 md:h-8 text-white" />
-            </div>
-            <span className="text-sm font-semibold text-slate-600 group-hover:text-slate-800">
-              Iniciar Gravação
-            </span>
+            {isProcessing ? (
+              <Loader2 className="w-10 h-10 text-white animate-spin" />
+            ) : (
+              <Mic className="w-10 h-10 md:w-12 md:h-12 text-white" />
+            )}
           </button>
         ) : (
           <button
             onClick={onStopRecording}
-            className="group relative flex flex-col items-center justify-center gap-2 transition-all"
-            title="Finalizar"
+            className="relative w-24 h-24 md:w-32 md:h-32 flex items-center justify-center bg-white rounded-full shadow-2xl hover:bg-red-50 border-4 border-red-100 hover:border-red-200 hover:scale-105 active:scale-95 transition-all duration-300"
+            title="Parar gravação"
           >
-            <div className="w-16 h-16 md:w-20 md:h-20 bg-white border-4 border-slate-600 rounded-full flex items-center justify-center hover:bg-slate-50 transition-all transform group-active:scale-95 shadow-lg">
-              <Square className="w-8 h-8 md:w-8 md:h-8 text-slate-700 fill-current" />
-            </div>
-            <span className="text-sm font-semibold text-slate-600 group-hover:text-slate-800">
-              Parar
-            </span>
+            <Square className="w-10 h-10 md:w-12 md:h-12 text-red-500 fill-current rounded-sm" />
           </button>
         )}
       </div>
+
+      <p className="mt-8 text-slate-400 font-medium text-sm tracking-wide uppercase">
+        {isRecording
+          ? "Toque para finalizar"
+          : isProcessing
+          ? "Processando áudio..."
+          : "Toque para gravar"}
+      </p>
     </div>
   );
 };
