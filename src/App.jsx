@@ -133,7 +133,6 @@ function App() {
       ) : (
         <div className="relative z-10 flex flex-col h-screen overflow-hidden p-4 md:p-6 transition-all duration-700">
           <main className="flex-1 flex flex-col w-full max-w-4xl mx-auto bg-white/70 dark:bg-slate-900/60 backdrop-blur-xl rounded-[2.5rem] shadow-2xl shadow-slate-200/50 dark:shadow-black/50 border border-white dark:border-slate-800 overflow-hidden transition-all duration-500">
-            {/* Header da Aplicação */}
             <div className="flex items-center justify-between p-6 md:p-8 border-b border-slate-100/50 dark:border-slate-800/50">
               <button
                 onClick={handleBackToLanding}
@@ -144,7 +143,6 @@ function App() {
               </button>
 
               <div className="flex items-center gap-3">
-                {/* Botão de Histórico */}
                 <button
                   onClick={() => setHistoryOpen(true)}
                   className="flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-slate-600 transition-all duration-300 bg-white border border-slate-200 rounded-full hover:border-blue-200 hover:text-blue-700 hover:shadow-sm active:scale-95 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300 dark:hover:text-blue-400 dark:hover:border-blue-500/50"
@@ -155,7 +153,6 @@ function App() {
               </div>
             </div>
 
-            {/* Conteúdo Principal */}
             <div className="flex-1 overflow-y-auto p-6 md:p-12 flex flex-col items-center custom-scrollbar dark:scrollbar-thumb-slate-700">
               <PermissionManager
                 permissionGranted={hasPermission}
@@ -165,7 +162,6 @@ function App() {
 
               {hasPermission && (
                 <div className="w-full max-w-2xl mx-auto space-y-10 animate-in fade-in slide-in-from-bottom-8 duration-700">
-                  {/* Estado: Gravação ou Espera */}
                   {(appState === "idle" ||
                     appState === "recording" ||
                     appState === "transcribing") && (
@@ -191,7 +187,6 @@ function App() {
                     </div>
                   )}
 
-                  {/* Estado: Revisão do Texto */}
                   {appState === "review" && (
                     <div className="bg-white dark:bg-slate-900/80 rounded-[2rem] p-8 shadow-xl shadow-slate-200/50 dark:shadow-black/30 border border-slate-100 dark:border-slate-800 space-y-6 transition-colors">
                       <div className="flex items-center gap-3 text-slate-400 uppercase text-xs font-bold tracking-wider mb-2">
@@ -223,7 +218,6 @@ function App() {
                     </div>
                   )}
 
-                  {/* Estado: Processando */}
                   {appState === "processing" && (
                     <div className="flex flex-col items-center justify-center min-h-[40vh] gap-6">
                       <div className="relative">
@@ -236,7 +230,6 @@ function App() {
                     </div>
                   )}
 
-                  {/* Estado: Sucesso / Resultado */}
                   {appState === "success" && (
                     <div className="space-y-8 pb-12">
                       <div className="bg-white/40 dark:bg-slate-900/40 p-6 rounded-2xl border border-white dark:border-slate-800">

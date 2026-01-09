@@ -5,13 +5,11 @@ import ThemeToggle from "./ThemeToggle";
 const LandingPage = ({ onStart }) => {
   return (
     <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-6 text-center animate-in fade-in duration-1000 dark:text-white transition-colors duration-500">
-      {/* Toggle posicionado no canto superior direito */}
       <div className="absolute top-6 right-6 md:top-8 md:right-8 z-50">
         <ThemeToggle />
       </div>
 
       <div className="max-w-2xl mx-auto flex flex-col items-center gap-10">
-        {/* Cabeçalho Minimalista */}
         <div className="space-y-6 mt-8">
           <h1 className="text-5xl md:text-7xl font-light text-slate-900 dark:text-slate-50 leading-[1.1] tracking-tighter transition-colors duration-500">
             Voice AI <br />
@@ -21,12 +19,11 @@ const LandingPage = ({ onStart }) => {
           </h1>
 
           <p className="text-lg md:text-xl text-slate-500 dark:text-slate-400 font-light leading-relaxed max-w-lg mx-auto transition-colors duration-500">
-            Transcrição de alta fidelidade com Whisper e inteligência analítica. Simples, direto e
+            Transcrição de alta fidelidade com Whisper e Inteligência Artificial. Simples, direto e
             profissional.
           </p>
         </div>
 
-        {/* Botão de Ação Único */}
         <div>
           <button
             onClick={onStart}

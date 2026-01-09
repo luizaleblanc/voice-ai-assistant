@@ -15,15 +15,12 @@ const HistoryModal = ({ isOpen, onClose, recordings, onDelete }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
-      {/* Overlay backdrop com suporte a dark mode */}
       <div
         className="absolute inset-0 bg-slate-900/20 dark:bg-black/60 backdrop-blur-sm transition-opacity"
         onClick={onClose}
       ></div>
 
-      {/* Modal Content */}
       <div className="relative w-full max-w-3xl h-[80vh] bg-white dark:bg-slate-900 rounded-[2rem] shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-300 border border-white/50 dark:border-slate-800 transition-colors">
-        {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-slate-100 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-xl z-10">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-blue-50 dark:bg-slate-800 text-blue-600 dark:text-blue-400 rounded-xl">
@@ -41,7 +38,6 @@ const HistoryModal = ({ isOpen, onClose, recordings, onDelete }) => {
           </button>
         </div>
 
-        {/* Body / List */}
         <div className="flex-1 overflow-y-auto p-6 bg-slate-50/50 dark:bg-slate-950/50 custom-scrollbar dark:scrollbar-thumb-slate-700">
           {recordings.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 space-y-4">
