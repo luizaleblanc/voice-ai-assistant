@@ -1,77 +1,44 @@
 import React from "react";
-import { Mic, Zap, Shield, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import ThemeToggle from "./ThemeToggle";
 
 const LandingPage = ({ onStart }) => {
   return (
-    <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-6 text-center animate-in fade-in duration-700">
-      <div className="max-w-4xl mx-auto space-y-12">
-        <div className="space-y-6">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 shadow-sm mb-4">
-            <span className="relative flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
-            </span>
-            <span className="text-sm font-semibold text-blue-700 tracking-wide uppercase">
-              IA Ativa 2.0
-            </span>
-          </div>
+    <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-6 text-center animate-in fade-in duration-1000 dark:text-white transition-colors duration-500">
+      {/* Toggle posicionado no canto superior direito */}
+      <div className="absolute top-6 right-6 md:top-8 md:right-8 z-50">
+        <ThemeToggle />
+      </div>
 
-          <h1 className="text-5xl md:text-7xl font-extrabold text-slate-900 tracking-tight leading-tight">
-            Sua voz, <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-slate-800">
-              Inteligentemente Transcrita.
+      <div className="max-w-2xl mx-auto flex flex-col items-center gap-10">
+        {/* Cabeçalho Minimalista */}
+        <div className="space-y-6 mt-8">
+          <h1 className="text-5xl md:text-7xl font-light text-slate-900 dark:text-slate-50 leading-[1.1] tracking-tighter transition-colors duration-500">
+            Voice AI <br />
+            <span className="font-medium text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-slate-800 dark:from-blue-400 dark:to-slate-200">
+              Assistant
             </span>
           </h1>
 
-          <p className="text-xl md:text-2xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            Transforme áudios em insights acionáveis com a precisão do Whisper e o poder da
-            Inteligência Artificial.
+          <p className="text-lg md:text-xl text-slate-500 dark:text-slate-400 font-light leading-relaxed max-w-lg mx-auto transition-colors duration-500">
+            Transcrição de alta fidelidade com Whisper e inteligência analítica. Simples, direto e
+            profissional.
           </p>
         </div>
 
+        {/* Botão de Ação Único */}
         <div>
           <button
             onClick={onStart}
-            className="group relative inline-flex items-center justify-center gap-3 px-10 py-5 text-lg font-bold text-white transition-all duration-300 bg-slate-900 rounded-2xl hover:bg-blue-600 hover:shadow-2xl hover:shadow-blue-900/20 hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-blue-500/30"
+            className="group relative flex items-center justify-center gap-3 px-10 py-5 text-base font-medium text-white transition-all duration-300 bg-slate-900 dark:bg-blue-600 rounded-full hover:bg-blue-600 dark:hover:bg-blue-500 hover:shadow-xl hover:shadow-blue-900/10 hover:-translate-y-0.5 active:scale-95 min-w-[220px]"
           >
-            Começar Agora
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            Iniciar Gravação
+            <ArrowRight className="w-4 h-4 opacity-70 group-hover:translate-x-1 transition-transform" />
           </button>
-          <p className="mt-4 text-sm text-slate-500 font-medium">
-            Sem cadastro necessário • Uso imediato
-          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-12 text-left">
-          <div className="p-6 bg-white/60 backdrop-blur-md rounded-2xl border border-white/50 shadow-sm hover:shadow-md transition-shadow">
-            <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4 text-blue-600">
-              <Mic size={24} />
-            </div>
-            <h3 className="text-lg font-bold text-slate-800 mb-2">Transcrição Precisa</h3>
-            <p className="text-slate-600 leading-relaxed">
-              Tecnologia Whisper para converter fala em texto com máxima fidelidade.
-            </p>
-          </div>
-
-          <div className="p-6 bg-white/60 backdrop-blur-md rounded-2xl border border-white/50 shadow-sm hover:shadow-md transition-shadow">
-            <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4 text-blue-600">
-              <Zap size={24} />
-            </div>
-            <h3 className="text-lg font-bold text-slate-800 mb-2">Produtividade Real</h3>
-            <p className="text-slate-600 leading-relaxed">
-              Economize horas de anotações manuais. Fale e deixe a IA organizar.
-            </p>
-          </div>
-
-          <div className="p-6 bg-white/60 backdrop-blur-md rounded-2xl border border-white/50 shadow-sm hover:shadow-md transition-shadow">
-            <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4 text-blue-600">
-              <Shield size={24} />
-            </div>
-            <h3 className="text-lg font-bold text-slate-800 mb-2">Privacidade Total</h3>
-            <p className="text-slate-600 leading-relaxed">
-              Seus dados são processados de forma segura e transparente.
-            </p>
-          </div>
+        <div className="mt-12 text-xs text-slate-400 dark:text-slate-500 font-light tracking-wide uppercase transition-colors duration-500">
+          Powered by OpenAI Whisper & GPT-4
         </div>
       </div>
     </div>
