@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { storageService } from "../services/storageService";
 
 export const useRecordings = () => {
@@ -12,11 +12,15 @@ export const useRecordings = () => {
       const data = await storageService.getAllRecordings();
       setRecordings(data);
     } catch (err) {
+      console.error(err);
       setError(err.message);
     } finally {
       setLoading(false);
     }
   }, []);
+  useEffect(() => {
+    refreshRecordings();
+  }, [refreshRecordings]);
 
   const saveRecording = async (data) => {
     try {
@@ -40,12 +44,12 @@ export const useRecordings = () => {
 
   const clearAllRecordings = useCallback(async () => {
     try {
-      await storageService.clearStore();
       setRecordings([]);
+      await refreshRecordings();
     } catch (err) {
       setError(err.message);
     }
-  }, []);
+  }, [refreshRecordings]);
 
   return {
     recordings,

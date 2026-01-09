@@ -1,54 +1,90 @@
-const API_URL = "http://localhost:3001/api/recordings";
+const DB_NAME = "VoiceAIDB";
+const STORE_NAME = "recordings";
+const DB_VERSION = 1;
 
 export const storageService = {
-  saveRecording: async (recordingData) => {
-    const newItem = {
-      id: crypto.randomUUID(),
-      createdAt: new Date().toISOString(),
-      ...recordingData,
-    };
+  openDB: () => {
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.open(DB_NAME, DB_VERSION);
 
-    const response = await fetch(API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newItem),
+      request.onupgradeneeded = (event) => {
+        constdb = event.target.result;
+        if (!db.objectStoreNames.contains(STORE_NAME)) {
+          const store = db.createObjectStore(STORE_NAME, { keyPath: "id" });
+          store.createIndex("createdAt", "createdAt", { unique: false });
+        }
+      };
+
+      request.onsuccess = (event) => resolve(event.target.result);
+      request.onerror = (event) => reject(`Erro ao abrir banco de dados: ${event.target.error}`);
     });
+  },
 
-    if (!response.ok) {
-      throw new Error("Erro ao salvar no banco de dados");
-    }
+  saveRecording: async (recordingData) => {
+    const db = await storageService.openDB();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction([STORE_NAME], "readwrite");
+      const store = transaction.objectStore(STORE_NAME);
 
-    return newItem;
+      const newItem = {
+        id: crypto.randomUUID(),
+        createdAt: new Date().toISOString(),
+        ...recordingData,
+      };
+
+      const request = store.add(newItem);
+
+      request.onsuccess = () => resolve(newItem);
+      request.onerror = (event) => reject(`Erro ao salvar gravação: ${event.target.error}`);
+    });
   },
 
   getAllRecordings: async () => {
-    const response = await fetch(API_URL);
-    if (!response.ok) {
-      throw new Error("Erro ao buscar histórico");
-    }
-    return await response.json();
+    const db = await storageService.openDB();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction([STORE_NAME], "readonly");
+      const store = transaction.objectStore(STORE_NAME);
+      const index = store.index("createdAt");
+
+      const request = index.openCursor(null, "prev");
+      const results = [];
+
+      request.onsuccess = (event) => {
+        const cursor = event.target.result;
+        if (cursor) {
+          results.push(cursor.value);
+          cursor.continue();
+        } else {
+          resolve(results);
+        }
+      };
+      request.onerror = (event) => reject(`Erro ao listar gravações: ${event.target.error}`);
+    });
   },
 
   deleteRecording: async (id) => {
-    const response = await fetch(`${API_URL}/${id}`, {
-      method: "DELETE",
-    });
+    const db = await storageService.openDB();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction([STORE_NAME], "readwrite");
+      const store = transaction.objectStore(STORE_NAME);
 
-    if (!response.ok) {
-      throw new Error(`Erro ao deletar item ${id}`);
-    }
-    return true;
+      const request = store.delete(id);
+
+      request.onsuccess = () => resolve(true);
+      request.onerror = (event) => reject(`Erro ao deletar item ${id}: ${event.target.error}`);
+    });
   },
 
+  // Mantido para compatibilidade, mas a lógica de negócio decidirá quando usar
   clearStore: async () => {
-    const response = await fetch(API_URL, {
-      method: "DELETE",
-    });
+    const db = await storageService.openDB();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction([STORE_NAME], "readwrite");
+      const store = transaction.objectStore(STORE_NAME);
+      const request = store.clear();
 
-    if (!response.ok) {
-      throw new Error("Erro ao limpar histórico");
-    }
+      request.onsuccess = () => resolve();
+      request.onerror = (event) => reject(`Erro ao limpar histórico: ${event.target.error}`);
+    });
   },
 };
