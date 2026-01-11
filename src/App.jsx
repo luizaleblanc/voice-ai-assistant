@@ -37,7 +37,24 @@ function App() {
       await startRecording();
       setAppState("recording");
     } catch (err) {
-      setErrorMessage("Erro ao iniciar gravação.");
+      console.error(err);
+      if (err.name === "NotAllowedError" || err.name === "PermissionDeniedError") {
+        setErrorMessage("Permissão negada. Ative o microfone nas configurações do site/app.");
+      } else if (err.name === "NotFoundError" || err.name === "DevicesNotFoundError") {
+        setErrorMessage("Nenhum microfone encontrado neste dispositivo.");
+      } else if (err.name === "NotReadableError" || err.name === "TrackStartError") {
+        setErrorMessage("O microfone está sendo usado por outro aplicativo.");
+      } else if (err.name === "OverconstrainedError") {
+        setErrorMessage("O microfone não atende aos requisitos solicitados.");
+      } else if (err.name === "TypeError" && !navigator.mediaDevices) {
+        setErrorMessage(
+          "Seu navegador não suporta gravação de áudio ou o site não é seguro (HTTPS)."
+        );
+      } else {
+        setErrorMessage(
+          "Erro ao acessar microfone. Se estiver no Instagram/TikTok, abra no navegador nativo (Chrome/Safari)."
+        );
+      }
       setAppState("idle");
     }
   };
