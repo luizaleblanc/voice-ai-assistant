@@ -1,3 +1,5 @@
+<img width="1919" height="753" alt="voice-ai-assistant" src="https://github.com/user-attachments/assets/492f0905-8b02-4b39-b83c-490d5c52cbe2" />
+
 # Voice AI Assistant
 
 ## Visão Geral
