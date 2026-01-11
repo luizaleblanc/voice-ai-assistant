@@ -75,7 +75,6 @@ export const storageService = {
     });
   },
 
-  // Mantido para compatibilidade, mas a lógica de negócio decidirá quando usar
   clearStore: async () => {
     const db = await storageService.openDB();
     return new Promise((resolve, reject) => {
