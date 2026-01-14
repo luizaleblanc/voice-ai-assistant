@@ -1,120 +1,138 @@
-import React, { useState } from "react";
-import { X, Calendar, Trash2, ChevronRight, MessageSquare, History } from "lucide-react";
+import React from "react";
+import { X, Trash2, Calendar, MessageSquare, Clock } from "lucide-react";
 
-const HistoryModal = ({ isOpen, onClose, recordings, onDelete }) => {
-  const [expandedIds, setExpandedIds] = useState({});
+const HistoryItem = ({ rec, onDelete, isDark }) => (
+  <div
+    className={`p-5 rounded-xl border transition-all ${
+      isDark
+        ? "bg-[#1e293b] border-slate-700 hover:border-blue-500/50"
+        : "bg-white border-gray-200 hover:border-blue-400"
+    }`}
+  >
+    <div className="flex justify-between items-start mb-4">
+      <div
+        className={`flex items-center gap-2 text-xs font-medium uppercase tracking-wider ${
+          isDark ? "text-slate-400" : "text-gray-500"
+        }`}
+      >
+        <Calendar size={12} />
+        {new Date(rec.timestamp).toLocaleString()}
+      </div>
+      <button
+        onClick={() => onDelete(rec.id)}
+        className={`p-1.5 rounded-lg transition-colors ${
+          isDark
+            ? "text-slate-500 hover:text-red-400 hover:bg-red-900/20"
+            : "text-gray-400 hover:text-red-600 hover:bg-red-50"
+        }`}
+      >
+        <Trash2 size={14} />
+      </button>
+    </div>
 
+    <div className="space-y-4">
+      <div className={`pl-3 border-l-2 ${isDark ? "border-slate-600" : "border-gray-200"}`}>
+        <p className={`text-lg font-medium italic ${isDark ? "text-white" : "text-gray-900"}`}>
+          "{rec.transcription}"
+        </p>
+        <span
+          className={`text-[10px] font-bold mt-1 block ${
+            isDark ? "text-slate-500" : "text-gray-400"
+          }`}
+        >
+          ORIGINAL
+        </span>
+      </div>
+
+      {rec.aiResponse && (
+        <div
+          className={`p-4 rounded-lg ${
+            isDark
+              ? "bg-blue-900/20 border border-blue-900/50"
+              : "bg-blue-50 border border-blue-100"
+          }`}
+        >
+          <div className="flex items-center gap-2 mb-2">
+            <MessageSquare size={14} className="text-blue-500" />
+            <span className="text-xs font-bold text-blue-500 uppercase">Análise IA</span>
+          </div>
+          <p className={`text-sm leading-relaxed ${isDark ? "text-slate-300" : "text-gray-700"}`}>
+            {rec.aiResponse}
+          </p>
+        </div>
+      )}
+    </div>
+  </div>
+);
+
+const HistoryModal = ({ isOpen, onClose, recordings, onDelete, onClearAll, isDark }) => {
   if (!isOpen) return null;
 
-  const toggleExpand = (id) => {
-    setExpandedIds((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
       <div
-        className="absolute inset-0 bg-slate-900/20 dark:bg-black/60 backdrop-blur-sm transition-opacity"
-        onClick={onClose}
-      ></div>
-
-      <div className="relative w-full max-w-3xl h-[80vh] bg-white dark:bg-slate-900 rounded-[2rem] shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-300 border border-white/50 dark:border-slate-800 transition-colors">
-        <div className="flex items-center justify-between p-6 border-b border-slate-100 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-xl z-10">
+        className={`w-full max-w-2xl max-h-[85vh] rounded-2xl flex flex-col shadow-2xl border ${
+          isDark ? "bg-[#0f172a] border-slate-800" : "bg-white border-gray-200"
+        }`}
+      >
+        <div
+          className={`px-6 py-5 border-b flex justify-between items-center ${
+            isDark ? "border-slate-800 bg-[#1e293b]/50" : "border-gray-100 bg-gray-50"
+          }`}
+        >
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-blue-50 dark:bg-slate-800 text-blue-600 dark:text-blue-400 rounded-xl">
-              <History size={20} />
+            <div
+              className={`p-2 rounded-lg ${
+                isDark ? "bg-slate-800 text-blue-400" : "bg-white text-blue-600 shadow-sm"
+              }`}
+            >
+              <Clock size={20} />
             </div>
-            <h2 className="text-xl font-medium text-slate-800 dark:text-white tracking-tight">
+            <h2 className={`text-lg font-semibold ${isDark ? "text-white" : "text-gray-900"}`}>
               Histórico de Gravações
             </h2>
           </div>
+
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-full transition-colors"
+            className={`p-2 rounded-lg transition-colors ${
+              isDark
+                ? "text-slate-400 hover:text-white hover:bg-slate-800"
+                : "text-gray-400 hover:text-gray-900 hover:bg-gray-200"
+            }`}
           >
-            <X size={24} strokeWidth={1.5} />
+            <X size={20} />
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-6 bg-slate-50/50 dark:bg-slate-950/50 custom-scrollbar dark:scrollbar-thumb-slate-700">
+        <div className="flex-1 overflow-y-auto p-6 custom-scrollbar">
           {recordings.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 space-y-4">
-              <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center">
-                <History size={32} className="opacity-20" />
-              </div>
-              <p className="font-light text-lg">Nenhum registro encontrado</p>
+            <div className={`text-center py-12 ${isDark ? "text-slate-500" : "text-gray-400"}`}>
+              <p>Nenhuma gravação encontrada.</p>
             </div>
           ) : (
             <div className="space-y-4">
               {recordings.map((rec) => (
-                <div
-                  key={rec.id}
-                  className="group bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-blue-200 dark:hover:border-blue-900/50 transition-all duration-300"
-                >
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
-                    <div className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider">
-                      <Calendar size={12} />
-                      {new Date(rec.createdAt).toLocaleDateString()} •{" "}
-                      {new Date(rec.createdAt).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </div>
-                    <button
-                      onClick={() => onDelete(rec.id)}
-                      className="self-end sm:self-auto flex items-center gap-2 text-xs font-medium text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 px-3 py-1.5 rounded-full transition-colors opacity-0 group-hover:opacity-100"
-                    >
-                      <Trash2 size={12} /> Excluir
-                    </button>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div className="relative pl-4 border-l-2 border-slate-100 dark:border-slate-700">
-                      <p className="text-slate-900 dark:text-slate-200 font-medium italic mb-1">
-                        "{rec.transcription}"
-                      </p>
-                      <span className="text-xs text-slate-400 font-medium uppercase tracking-wide">
-                        Original
-                      </span>
-                    </div>
-
-                    <div className="bg-blue-50/50 dark:bg-blue-900/10 rounded-xl p-4 border border-blue-100/50 dark:border-blue-900/30">
-                      <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 mb-2">
-                        <MessageSquare size={14} />
-                        <span className="text-xs font-bold uppercase tracking-wider">
-                          Análise IA
-                        </span>
-                      </div>
-                      <div
-                        className={`text-slate-600 dark:text-slate-300 text-sm leading-relaxed font-light ${
-                          !expandedIds[rec.id] && "line-clamp-2"
-                        }`}
-                      >
-                        {rec.aiResponse}
-                      </div>
-                      {rec.aiResponse.length > 100 && (
-                        <button
-                          onClick={() => toggleExpand(rec.id)}
-                          className="mt-2 text-xs font-bold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 uppercase tracking-wide flex items-center gap-1"
-                        >
-                          {expandedIds[rec.id] ? "Ler menos" : "Ler análise completa"}
-                          <ChevronRight
-                            size={12}
-                            className={`transition-transform ${
-                              expandedIds[rec.id] ? "rotate-90" : ""
-                            }`}
-                          />
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                </div>
+                <HistoryItem key={rec.id} rec={rec} onDelete={onDelete} isDark={isDark} />
               ))}
             </div>
           )}
         </div>
+
+        {recordings.length > 0 && (
+          <div
+            className={`p-4 border-t ${
+              isDark ? "border-slate-800" : "border-gray-100"
+            } flex justify-end`}
+          >
+            <button
+              onClick={onClearAll}
+              className="text-xs font-bold text-red-500 hover:text-red-400 uppercase tracking-wider px-4 py-2"
+            >
+              Limpar Todo o Histórico
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
